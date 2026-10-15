@@ -1,0 +1,366 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   混沌赤潮 · 设计基础
+   - 两套主题共用同一组语义变量，取值已按 WCAG AA 校准
+   - 正文面向中文长文排版（字号 / 行高 / 段距 / 限宽）
+   ============================================================ */
+
+@layer base {
+  :root {
+    /* ── 亮色：珍珠白底 + 深暗金 ── */
+    --background: 220 8% 98%;
+    --foreground: 40 20% 12%;
+
+    --card: 220 10% 99%;
+    --card-foreground: 40 20% 12%;
+    --popover: 220 10% 99%;
+    --popover-foreground: 40 20% 12%;
+
+    --primary: 41 68% 31%;
+    --primary-foreground: 220 10% 99%;
+
+    --secondary: 220 8% 93%;
+    --secondary-foreground: 40 20% 18%;
+
+    --muted: 220 8% 95%;
+    --muted-foreground: 38 10% 38%;
+
+    --accent: 220 8% 92%;
+    --accent-foreground: 41 60% 27%;
+
+    --destructive: 0 60% 45%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 6% 84%;
+    --input: 220 6% 84%;
+    --ring: 41 68% 31%;
+
+    --radius: 0.25rem;
+
+    /* 品牌色（亮色） */
+    --page-bg: 220 8% 98%;
+    --surface: 220 10% 99%;
+    --surface-2: 220 8% 93%;
+    --surface-3: 220 7% 86%;
+    --text-strong: 42 18% 12%;
+    --text-body: 38 12% 26%;
+    --text-muted: 38 10% 38%;
+    --brass: 41 68% 31%;
+    --brass-strong: 41 70% 25%;
+    --brass-soft: 42 62% 33%;
+  }
+
+  .dark {
+    /* ── 暗色：邃墨黑 + 黄铜 ── */
+    --background: 240 8% 5%;
+    --foreground: 44 34% 90%;
+
+    --card: 240 6% 7%;
+    --card-foreground: 44 34% 90%;
+    --popover: 240 8% 6%;
+    --popover-foreground: 44 34% 90%;
+
+    --primary: 46 63% 52%;
+    --primary-foreground: 240 8% 5%;
+
+    --secondary: 240 5% 12%;
+    --secondary-foreground: 44 30% 84%;
+
+    --muted: 240 4% 11%;
+    --muted-foreground: 42 8% 60%;
+
+    --accent: 46 40% 16%;
+    --accent-foreground: 46 63% 72%;
+
+    --destructive: 0 62% 42%;
+    --destructive-foreground: 44 34% 92%;
+
+    --border: 45 25% 22%;
+    --input: 45 25% 22%;
+    --ring: 46 63% 52%;
+
+    --page-bg: 240 8% 5%;
+    --surface: 240 6% 7%;
+    --surface-2: 240 6% 11%;
+    --surface-3: 240 5% 15%;
+    --text-strong: 44 34% 90%;
+    --text-body: 42 18% 68%;
+    --text-muted: 40 10% 58%;
+    --brass: 46 63% 52%;
+    --brass-strong: 43 55% 42%;
+    --brass-soft: 45 65% 65%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+    /* 顶部固定导航高度，锚点跳转不被遮挡 */
+    scroll-padding-top: 5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+    font-feature-settings: "liga" 1, "kern" 1;
+    text-rendering: optimizeLegibility;
+    /* 中文长文更自然的换行，避免西文长串撑破版面 */
+    overflow-wrap: break-word;
+  }
+
+  /* 全站图片自适应容器，杜绝横向溢出 */
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* 键盘可达性：统一的可见焦点环 */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* 触控目标下限，避免手机误触 */
+  @media (pointer: coarse) {
+    :where(a, button)[data-tap] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+
+  ::selection {
+    @apply bg-brass/25 text-parchment-50;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--page-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--surface-3);
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--brass) / 0.5);
+  }
+
+  /* 尊重系统「减弱动态效果」偏好 */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* ── 章节眉题：小号全大写 + 宽字距 + 暗金 ── */
+  .eyebrow {
+    @apply font-sans text-[11px] font-medium uppercase tracking-widest3 text-brass;
+  }
+
+  /* ── 装饰细线：向两侧渐隐的金色发丝线 ── */
+  .hairline {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-brass/40 to-transparent;
+  }
+
+  /* ── 学术卡片（去掉毛玻璃，降低滚动开销）── */
+  .card-academia {
+    @apply rounded-sm border border-border/70 bg-card/70;
+  }
+
+  /* ── 描边按钮 ── */
+  .btn-academia {
+    @apply inline-flex items-center justify-center rounded-sm border border-brass/60 bg-brass/10 px-6 py-3 text-xs font-medium uppercase tracking-widest2 text-brass transition-colors duration-300 hover:border-brass/80 hover:bg-brass/20;
+  }
+
+  /* ── 实心按钮 ── */
+  .btn-academia-solid {
+    @apply inline-flex items-center justify-center rounded-sm bg-brass px-6 py-3 text-xs font-semibold uppercase tracking-widest2 text-ink-950 transition-colors duration-300 hover:bg-brass-300;
+  }
+
+  /* ── 标签胶囊：替代长串裸文本，更易扫读（不低 11px 可读下限）── */
+  .tag-chip {
+    @apply inline-flex items-center rounded-full border border-brass/30 px-2.5 py-1 font-sans text-[11px] uppercase tracking-widest2 text-brass/85;
+  }
+
+  /* ── 页面暗角光晕：顶部微金 ── */
+  .bg-vignette {
+    background-image: radial-gradient(
+      1000px 520px at 50% -10%,
+      rgba(212, 175, 55, 0.09),
+      transparent 62%
+    );
+  }
+
+  /* 亮色模式：去掉金色光晕，保持干净的珍珠白 */
+  html:not(.dark) .bg-vignette {
+    background-image: none;
+  }
+
+  /* ============================================================
+     正文排版
+     用语义变量驱动，两套主题各自取色，无需两处维护；
+     选择器特异性高于 typography 插件自身，确保覆盖生效。
+     ============================================================ */
+  html:not(.dark) .prose,
+  html:not(.dark) .prose-invert {
+    --tw-prose-body: hsl(var(--text-body));
+    --tw-prose-headings: hsl(var(--text-strong));
+    --tw-prose-lead: hsl(var(--text-body));
+    --tw-prose-links: hsl(var(--brass));
+    --tw-prose-bold: hsl(var(--text-strong));
+    --tw-prose-counters: hsl(var(--text-muted));
+    --tw-prose-bullets: hsl(var(--brass) / 0.8);
+    --tw-prose-hr: hsl(var(--border));
+    --tw-prose-quotes: hsl(var(--text-body));
+    --tw-prose-quote-borders: hsl(var(--brass) / 0.55);
+    --tw-prose-captions: hsl(var(--text-muted));
+    --tw-prose-code: hsl(var(--brass-strong));
+    --tw-prose-th-borders: hsl(var(--border));
+    --tw-prose-td-borders: hsl(var(--border));
+  }
+
+  .dark .prose,
+  .dark .prose-invert {
+    --tw-prose-body: hsl(var(--text-body));
+    --tw-prose-headings: hsl(var(--text-strong));
+    --tw-prose-lead: hsl(var(--text-body));
+    --tw-prose-links: hsl(var(--brass));
+    --tw-prose-bold: hsl(var(--text-strong));
+    --tw-prose-counters: hsl(var(--text-muted));
+    --tw-prose-bullets: hsl(var(--brass) / 0.8);
+    --tw-prose-hr: hsl(var(--border));
+    --tw-prose-quotes: hsl(var(--text-body));
+    --tw-prose-quote-borders: hsl(var(--brass) / 0.55);
+    --tw-prose-captions: hsl(var(--text-muted));
+    --tw-prose-code: hsl(var(--brass-soft));
+    --tw-prose-th-borders: hsl(var(--border));
+    --tw-prose-td-borders: hsl(var(--border));
+  }
+
+  /* 中文长文：字号与行距比默认更舒展 */
+  .prose {
+    font-size: 1.0625rem;
+    line-height: 1.85;
+  }
+  @media (min-width: 640px) {
+    .prose {
+      font-size: 1.125rem;
+      line-height: 1.9;
+    }
+  }
+
+  /* 段落：中文阅读更依赖段距，而非首行缩进 */
+  .prose :where(p) {
+    margin-top: 1.05em;
+    margin-bottom: 1.05em;
+    text-wrap: pretty;
+  }
+
+  .prose :where(h1, h2, h3, h4) {
+    text-wrap: balance;
+  }
+
+  .prose :where(h2) {
+    margin-top: 2.2em;
+    margin-bottom: 0.8em;
+  }
+
+  .prose :where(h3) {
+    margin-top: 1.8em;
+    margin-bottom: 0.6em;
+  }
+
+  /* 正文内的媒体与代码一律不得撑破版面 */
+  .prose :where(img, video, iframe, svg, table, pre) {
+    max-width: 100%;
+  }
+
+  .prose :where(img) {
+    display: block;
+    /* 窄图居中，避免长文里一行行图片都贴着左边缘 */
+    margin-inline: auto;
+    height: auto;
+    border-radius: 0.25rem;
+    border: 1px solid hsl(var(--border) / 0.6);
+    /* 图片尚未解码时的占位底色，减少加载中的空白突兀感 */
+    background-color: hsl(var(--surface-2));
+  }
+
+  .prose :where(figure) {
+    margin-top: 1.6em;
+    margin-bottom: 1.6em;
+  }
+
+  .prose :where(pre) {
+    overflow-x: auto;
+  }
+
+  .prose :where(a) {
+    overflow-wrap: anywhere;
+    text-underline-offset: 0.25em;
+    text-decoration-thickness: 1px;
+  }
+
+  /* 公众号原文常带空段落，收紧到不发虚 */
+  .prose :where(p:empty) {
+    display: none;
+  }
+
+  /* ── 全站胶片颗粒质感（极淡，增加纸张/底片层次）── */
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  }
+
+  /* 文章末尾二维码：缩小、并列、居中 */
+  .article-qr-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin: 3rem 0 1rem;
+  }
+  .article-qr {
+    width: 150px;
+    height: auto;
+  }
+}
+
+@layer utilities {
+  /* 手机底部导航的安全区留白（iPhone 底部横条） */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* 横向滚动的分类条：隐藏滚动条，保留滑动 */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
