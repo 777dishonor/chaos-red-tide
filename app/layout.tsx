@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
+
+import { assetUrl } from "@/lib/asset";
+
 import "./globals.css";
 
 /**
@@ -55,6 +58,10 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  // 网页应用清单：文件在 public/manifest.webmanifest。
+  // 注意 Next 不会给 manifest 字段自动加部署子路径，所以这里显式拼前缀；
+  // 清单内部的 start_url / icons 用相对路径，本地与线上都正确。
+  manifest: assetUrl("/manifest.webmanifest"),
 };
 
 export const viewport: Viewport = {

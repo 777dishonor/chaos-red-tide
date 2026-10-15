@@ -41,3 +41,7 @@ next-env.d.ts
 
 # Windows 快捷方式
 *.lnk
+
+# 部署配置：本机 GitHub 令牌无 workflow 权限，无法推送该目录；
+# 本地保留备用，实际部署走「一键发布.bat」（构建后推 gh-pages 分支）。
+/.github/workflows/
