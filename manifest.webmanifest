@@ -1,0 +1,19 @@
+{
+  "name": "混沌赤潮 · 文存",
+  "short_name": "混沌赤潮",
+  "description": "西方仪式魔法的实操记录与文献译介。",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0D0D0F",
+  "theme_color": "#0D0D0F",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
