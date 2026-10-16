@@ -8,6 +8,7 @@
     "build": "next build",
     "build:pages": "node scripts/build-pages.mjs",
     "build:standalone": "node scripts/build-pages.mjs --standalone",
+    "publish": "node scripts/publish.mjs",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "import:wechat": "node scripts/import-wechat.mjs"
